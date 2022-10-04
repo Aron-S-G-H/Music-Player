@@ -41,7 +41,7 @@ body {
 .player-container {
   height: 500px;
   width: 400px;
-  background: #e7e7e7;
+  background: #393939;
   border-radius: 20px;
   box-shadow: 0 15px 30px 5px rgba(0, 0, 0, 0.3);
 }
@@ -79,6 +79,7 @@ h2 {
   font-size: 25px;
   text-align: center;
   margin: 0;
+  color: #ffca00;
 }
 
 h3 {
@@ -86,6 +87,19 @@ h3 {
   text-align: center;
   font-weight: 400;
   margin: 5px 0 0;
+  color: #cca100;
+}
+span {
+  color: white;
+}
+#prev {
+  color: #ffca00;
+}
+#play {
+  color: #ffca00;
+}
+#next{
+  color: #ffca00;
 }
 
 /* Progress */

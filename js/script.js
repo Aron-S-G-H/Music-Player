@@ -1,76 +1,59 @@
-﻿"use strict"
+"use strict";
 
 const $ = document;
-const image = $.querySelector("#cover");
-const title = $.getElementById("title");
-const artist = $.getElementById("artist");
-const music = $.querySelector("audio");
+const cover = $.querySelector('.cover');
+const songsList = $.getElementById('song-list');
+const playingBanner = $.querySelector('.cover .now-playing-banner');
+const background = $.getElementById('background');
+const nowPlayingImg = $.querySelector('.now-playing-img');
+const nowPlayingTitle = $.querySelector('.now-playing-title');
+const bigPlayBtn = $.querySelector('.big-play-button');
+const smallPlayBtn = $.getElementById('small-play-button');
+const prevBtn = $.getElementById("prev");
+const nextBtn = $.getElementById("next");
+const audio = $.getElementById('audio');
 const currentTimeEl = $.getElementById("current-time");
 const durationEl = $.getElementById("duration");
 const progress = $.getElementById("progress");
 const progressContainer = $.getElementById("progress-container");
-const prevBtn = $.getElementById("prev");
-const playBtn = $.getElementById("play");
-const nextBtn = $.getElementById("next");
-const background = $.getElementById("background");
+const nowPlaying = document.querySelector(".now-playing-wrapper");
 
-// Music
+
+// Musics
 const songs = [
-  {path: "musics/living life.mp3", displayName: "Living life in The Night", artist: "Cheriimoya ft Sierra kidd", cover: "images/Cheriimoya.jpg"},
-  {path: "musics/drive forever.mp3", displayName: "Drive forever", artist: "Sergio Valentino", cover: "images/drive.jpg"},
-  {path: "musics/in the end.mp3", displayName: "In the End", artist: "Jamie Dupuise", cover: "images/jamie.jpg"},
+  {path: "musics/The Dark of you.mp3", displayName: "The Dark of you", artist: "Breaking Benjamin", cover: "images/breaking b.jpg", duration:'4:12'},
+  {path: "musics/drive forever.mp3", displayName: "Drive forever", artist: "Sergio Valentino", cover: "images/drive.jpg", duration:'4:34'},
+  {path: "musics/living life.mp3", displayName: "Living life in The Night", artist: "Cheriimoya ft Sierra kidd", cover: "images/Cheriimoya.jpg", duration:'3:37'},
+  {path: "musics/Call Out My Name.mp3", displayName: "Call out My name", artist: "The Weeknd", cover: "images/the weeknd.jpg", duration:'3:48'},
 ];
 
+
+// Current Song 
+let songIndex = 0;
 // Check if Playing
 let isPlaying = false;
+
 
 // Play
 const playSong = () => {
   isPlaying = true;
-  playBtn.classList.replace("fa-play", "fa-pause");
-  playBtn.setAttribute("title", "Pause");
-  music.play();
+  bigPlayBtn.firstElementChild.classList.replace("fa-play", "fa-pause");
+  smallPlayBtn.classList.replace("fa-play", "fa-pause");
+  audio.play();
 }
+
 
 // Pause
 const pauseSong = () => {
   isPlaying = false;
-  playBtn.classList.replace("fa-pause", "fa-play");
-  playBtn.setAttribute("title", "Play");
-  music.pause();
+  bigPlayBtn.firstElementChild.classList.replace("fa-pause", "fa-play");
+  smallPlayBtn.classList.replace("fa-pause", "fa-play");
+  audio.pause();
 }
 
-// Play or Pause Event Listener
-playBtn.addEventListener("click", () => {
-  if (isPlaying) {
-    pauseSong()
-  } else {
-    playSong()
-  }
-})
-
-// Update DOM
-const loadSong = song => {
-  title.textContent = song.displayName;
-  artist.textContent = song.artist;
-  music.src = song.path;
-  changeCover(song.cover);
-}
-
-const changeCover = cover => {
-  image.classList.remove("active");
-  setTimeout(() => {
-    image.src = cover;
-    image.classList.add("active");
-  }, 100);
-  background.src = cover;
-}
-
-// Current Song
-let songIndex = 0;
 
 // Previous Song
-function prevSong() {
+const prevSong = () => {
   songIndex--;
   if (songIndex < 0) {
     songIndex = songs.length - 1;
@@ -79,8 +62,9 @@ function prevSong() {
   playSong();
 }
 
+
 // Next Song
-function nextSong() {
+const nextSong = () => {
   songIndex++;
   if (songIndex > songs.length - 1) {
     songIndex = 0;
@@ -89,11 +73,34 @@ function nextSong() {
   playSong();
 }
 
-// On Load - Select First Song
-loadSong(songs[songIndex]);
+
+// Update DOM 
+const loadSong = song => {
+  cover.style.backgroundImage = `url("${song.cover}")`;
+  playingBanner.innerHTML = '';
+  playingBanner.insertAdjacentHTML('beforeend', `<p1><b>${song.displayName}</b>- ${song.artist}</p1>`);
+  background.src = song.cover;
+  nowPlayingImg.style.backgroundImage = `url("${song.cover}")`;
+  nowPlayingTitle.innerHTML = '';
+  nowPlayingTitle.insertAdjacentHTML('beforeend', `<h>${song.displayName}</h><p>${song.artist}</p>`);
+  audio.src = song.path;
+};
+
+
+// Set & play selected song 
+const setSong = songName => {
+  let selected_song_index = songs.findIndex(function(item){
+    return item.displayName == songName
+  });
+  songIndex = selected_song_index;
+  loadSong(songs[songIndex]);
+  playSong();
+  hideShow();
+} 
+
 
 // Update Progress Bar & Time
-function updateProgressBar(e) {
+const updateProgressBar = e => {
   if (isPlaying) {
     const duration = e.srcElement.duration;
     const currentTime = e.srcElement.currentTime;
@@ -120,17 +127,55 @@ function updateProgressBar(e) {
   }
 }
 
+
 // Set Progress Bar
 function setProgressBar(e) {
   const width = this.clientWidth;
   const clickX = e.offsetX;
-  const duration = music.duration;
-  music.currentTime = (clickX / width) * duration;
+  const duration = audio.duration;
+  audio.currentTime = (clickX / width) * duration;
 }
 
-// Event Listeners
+
+const hideShow = () => {
+  if (cover.style.display === "none" && songsList.style.display === "none") {
+    cover.style.display = "";
+    songsList.style.display = "";
+    nowPlaying.style.display = "none";
+  }else {
+    cover.style.display = "none";
+    songsList.style.display = "none";
+    nowPlaying.style.display = "";
+  }
+}
+  
+
+songs.forEach(function(song){
+  songsList.insertAdjacentHTML('beforeend', `<div class="song-row" onclick="setSong('${song.displayName}')"><h1>${song.displayName}</h1> <span>${song.duration}</span></div>`)
+});
+
+
+$.addEventListener(onload, loadSong(songs[songIndex]));
 prevBtn.addEventListener("click", prevSong);
 nextBtn.addEventListener("click", nextSong);
-music.addEventListener("ended", nextSong);
-music.addEventListener("timeupdate", updateProgressBar);
+audio.addEventListener("ended", nextSong);
+audio.addEventListener("timeupdate", updateProgressBar);
 progressContainer.addEventListener("click", setProgressBar);
+// Play or Pause Event Listener
+bigPlayBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    pauseSong()
+  } else {
+    playSong()
+    hideShow()
+  }
+});
+// Play or Pause Event Listener
+smallPlayBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    pauseSong()
+  } else {
+    playSong()
+  }
+});
+  

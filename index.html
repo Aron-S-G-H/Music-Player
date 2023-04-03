@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
-<link rel="stylesheet" href="css/style.css"/>
-<title>Music Player</title>
+  <title>Music Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-
-    <div class="bg-container">
-        <img src="" alt="" id="background">
-    </div>
-    <div class="player-container">
-        <!-- Song -->
-        <div class="img-container">
-            <img src="" alt="Music cover" id="cover" class="active">
-        </div>
-        <h2 id="title"></h2>
-        <h3 id="artist"></h3>
-        <audio src=""></audio>
-        <!-- Progress -->
-        <div class="progress-container" id="progress-container">
-            <div class="progress" id="progress"></div>
-            <div class="duration-wrapper">
-                <span id="current-time"></span>
-                <span id="duration"></span>
-            </div>
-        </div>
-        <!-- Controls -->
-        <div class="player-controls">
-            <i class="fas fa-backward" id="prev" title="Previous"></i>
-            <i class="fas fa-play main-button" id="play" title="Play"></i>
-            <i class="fas fa-forward" id="next" title="Next"></i>
-        </div>
+  <div class="bg-container">
+    <img src="" alt="" id="background">
+  </div>
+  <div class="player-wrapper">
+    <div class="cover">
+      <div class="now-playing-banner"></div>
+      <div class="big-play-button">
+        <i class="fas fa-play"></i>
+      </div>
     </div>
 
+    <!-- Songs List  -->
+    <div class="song-list" id="song-list">
+      <div class="song-row">
+        <h>Songs</h>
+      </div>
+    </div>
+
+    <div class="fixed-bottom"><span class="material-icons" id="expand" onclick="hideShow()">keyboard_arrow_up</span></div>
+
+    <div class="now-playing-wrapper" style="display: none;">
+      <div class="now-playing-img"></div>
+      <div class="now-playing-title"></div>
+      <div class="controls">
+        <i class="fas fa-backward" id="prev"></i>
+        <i class="fas fa-play" id="small-play-button"></i>
+        <i class="fas fa-forward" id="next"></i>
+        <audio id="audio" src=""></audio>
+      </div>      
+      <!-- Progress -->
+      <div class="progress-container" id="progress-container">
+        <div class="progress" id="progress"></div>
+        <div class="duration-wrapper">
+            <span id="current-time"></span>
+            <span id="duration"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 <script src="js/script.js"></script>
-
 </body>
-</html> 
+
+</html>

@@ -28,7 +28,7 @@ const songs = [
 ];
 
 
-// Current Song 
+// Current Song Index
 let songIndex = 0;
 // Check if Playing
 let isPlaying = false;
@@ -155,7 +155,17 @@ songs.forEach(function(song){
 });
 
 
-$.addEventListener(onload, loadSong(songs[songIndex]));
+$.addEventListener('onload', loadSong(songs[songIndex]));
+$.addEventListener('keypress', event => {
+  if (event.keyCode == 32){
+    if (isPlaying){
+      pauseSong()
+    }
+    else{
+      playSong()
+    }
+  }
+});
 prevBtn.addEventListener("click", prevSong);
 nextBtn.addEventListener("click", nextSong);
 audio.addEventListener("ended", nextSong);
